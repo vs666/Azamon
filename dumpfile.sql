@@ -29,7 +29,7 @@ CREATE TABLE `AGENCY` (
   `AgencyID` varchar(15) NOT NULL,
   PRIMARY KEY (`AgencyID`),
   KEY `EmailID` (`EmailID`),
-  CONSTRAINT `AGENCY_ibfk_1` FOREIGN KEY (`EmailID`) REFERENCES `USER_TABLE` (`EmailID`)
+  CONSTRAINT `AGENCY_ibfk_1` FOREIGN KEY (`EmailID`) REFERENCES `USER_TABLE` (`EmailID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -55,8 +55,8 @@ CREATE TABLE `BELONGS_TO` (
   `CategoryID` varchar(255) NOT NULL,
   PRIMARY KEY (`ProductID`,`CategoryID`),
   KEY `CategoryID` (`CategoryID`),
-  CONSTRAINT `BELONGS_TO_ibfk_1` FOREIGN KEY (`ProductID`) REFERENCES `PRODUCTS` (`ProductID`),
-  CONSTRAINT `BELONGS_TO_ibfk_2` FOREIGN KEY (`CategoryID`) REFERENCES `CATEGORY` (`CategoryID`)
+  CONSTRAINT `BELONGS_TO_ibfk_1` FOREIGN KEY (`ProductID`) REFERENCES `PRODUCTS` (`ProductID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `BELONGS_TO_ibfk_2` FOREIGN KEY (`CategoryID`) REFERENCES `CATEGORY` (`CategoryID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -107,8 +107,8 @@ CREATE TABLE `CART` (
   `Product_type` varchar(255) NOT NULL,
   PRIMARY KEY (`CustomerID`,`ProductID`),
   KEY `ProductID` (`ProductID`),
-  CONSTRAINT `CART_ibfk_1` FOREIGN KEY (`CustomerID`) REFERENCES `CUSTOMER_DETAILS` (`CustomerID`),
-  CONSTRAINT `CART_ibfk_2` FOREIGN KEY (`ProductID`) REFERENCES `PRODUCTS` (`ProductID`)
+  CONSTRAINT `CART_ibfk_1` FOREIGN KEY (`CustomerID`) REFERENCES `CUSTOMER_DETAILS` (`CustomerID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `CART_ibfk_2` FOREIGN KEY (`ProductID`) REFERENCES `PRODUCTS` (`ProductID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -157,7 +157,7 @@ CREATE TABLE `CUSTOMER_DETAILS` (
   `Date_of_joining` date DEFAULT NULL,
   PRIMARY KEY (`CustomerID`),
   KEY `EmailID` (`EmailID`),
-  CONSTRAINT `CUSTOMER_DETAILS_ibfk_1` FOREIGN KEY (`EmailID`) REFERENCES `USER_TABLE` (`EmailID`)
+  CONSTRAINT `CUSTOMER_DETAILS_ibfk_1` FOREIGN KEY (`EmailID`) REFERENCES `USER_TABLE` (`EmailID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -184,7 +184,7 @@ CREATE TABLE `DELIVERY` (
   `AgencyID` varchar(15) NOT NULL,
   PRIMARY KEY (`TrackID`),
   KEY `AgencyID` (`AgencyID`),
-  CONSTRAINT `DELIVERY_ibfk_1` FOREIGN KEY (`AgencyID`) REFERENCES `AGENCY` (`AgencyID`)
+  CONSTRAINT `DELIVERY_ibfk_1` FOREIGN KEY (`AgencyID`) REFERENCES `AGENCY` (`AgencyID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -209,8 +209,8 @@ CREATE TABLE `FALLS_UNDER` (
   `SubCategoryID` varchar(255) NOT NULL,
   PRIMARY KEY (`SuperCategoryID`,`SubCategoryID`),
   KEY `SubCategoryID` (`SubCategoryID`),
-  CONSTRAINT `FALLS_UNDER_ibfk_1` FOREIGN KEY (`SubCategoryID`) REFERENCES `CATEGORY` (`CategoryID`),
-  CONSTRAINT `FALLS_UNDER_ibfk_2` FOREIGN KEY (`SuperCategoryID`) REFERENCES `CATEGORY` (`CategoryID`)
+  CONSTRAINT `FALLS_UNDER_ibfk_1` FOREIGN KEY (`SubCategoryID`) REFERENCES `CATEGORY` (`CategoryID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FALLS_UNDER_ibfk_2` FOREIGN KEY (`SuperCategoryID`) REFERENCES `CATEGORY` (`CategoryID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -238,9 +238,9 @@ CREATE TABLE `ORDERS` (
   PRIMARY KEY (`TrackID`,`Bill_number`,`CustomerID`),
   KEY `Bill_number` (`Bill_number`),
   KEY `CustomerID` (`CustomerID`),
-  CONSTRAINT `ORDERS_ibfk_1` FOREIGN KEY (`TrackID`) REFERENCES `DELIVERY` (`TrackID`),
-  CONSTRAINT `ORDERS_ibfk_2` FOREIGN KEY (`Bill_number`) REFERENCES `BILL` (`Bill_number`),
-  CONSTRAINT `ORDERS_ibfk_3` FOREIGN KEY (`CustomerID`) REFERENCES `CUSTOMER_DETAILS` (`CustomerID`)
+  CONSTRAINT `ORDERS_ibfk_1` FOREIGN KEY (`TrackID`) REFERENCES `DELIVERY` (`TrackID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `ORDERS_ibfk_2` FOREIGN KEY (`Bill_number`) REFERENCES `BILL` (`Bill_number`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `ORDERS_ibfk_3` FOREIGN KEY (`CustomerID`) REFERENCES `CUSTOMER_DETAILS` (`CustomerID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -317,7 +317,7 @@ CREATE TABLE `PURCHASE` (
   `Purchase_no` int NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`Purchase_no`),
   KEY `Payment_company` (`Payment_company`,`Mode_of_payment`),
-  CONSTRAINT `PURCHASE_ibfk_1` FOREIGN KEY (`Payment_company`, `Mode_of_payment`) REFERENCES `PAYMENT_MODE` (`Company`, `Mode`)
+  CONSTRAINT `PURCHASE_ibfk_1` FOREIGN KEY (`Payment_company`, `Mode_of_payment`) REFERENCES `PAYMENT_MODE` (`Company`, `Mode`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -342,8 +342,8 @@ CREATE TABLE `SELLS` (
   `SupplierID` varchar(225) NOT NULL,
   PRIMARY KEY (`ProductID`,`SupplierID`),
   KEY `SupplierID` (`SupplierID`),
-  CONSTRAINT `SELLS_ibfk_1` FOREIGN KEY (`ProductID`) REFERENCES `PRODUCTS` (`ProductID`),
-  CONSTRAINT `SELLS_ibfk_2` FOREIGN KEY (`SupplierID`) REFERENCES `SUPPLIER` (`SupplierID`)
+  CONSTRAINT `SELLS_ibfk_1` FOREIGN KEY (`ProductID`) REFERENCES `PRODUCTS` (`ProductID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `SELLS_ibfk_2` FOREIGN KEY (`SupplierID`) REFERENCES `SUPPLIER` (`SupplierID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -368,7 +368,7 @@ CREATE TABLE `SUPPLIER` (
   `EmailID` varchar(225) NOT NULL,
   PRIMARY KEY (`SupplierID`),
   KEY `EmailID` (`EmailID`),
-  CONSTRAINT `SUPPLIER_ibfk_1` FOREIGN KEY (`EmailID`) REFERENCES `USER_TABLE` (`EmailID`)
+  CONSTRAINT `SUPPLIER_ibfk_1` FOREIGN KEY (`EmailID`) REFERENCES `USER_TABLE` (`EmailID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -427,9 +427,9 @@ CREATE TABLE `WARRANTY` (
   PRIMARY KEY (`Bill_num`,`ProductId`,`Purchase_num`),
   KEY `ProductId` (`ProductId`),
   KEY `Purchase_num` (`Purchase_num`),
-  CONSTRAINT `WARRANTY_ibfk_1` FOREIGN KEY (`Bill_num`) REFERENCES `BILL` (`Bill_number`),
-  CONSTRAINT `WARRANTY_ibfk_2` FOREIGN KEY (`ProductId`) REFERENCES `PRODUCTS` (`ProductID`),
-  CONSTRAINT `WARRANTY_ibfk_3` FOREIGN KEY (`Purchase_num`) REFERENCES `PURCHASE` (`Purchase_no`)
+  CONSTRAINT `WARRANTY_ibfk_1` FOREIGN KEY (`Bill_num`) REFERENCES `BILL` (`Bill_number`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `WARRANTY_ibfk_2` FOREIGN KEY (`ProductId`) REFERENCES `PRODUCTS` (`ProductID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `WARRANTY_ibfk_3` FOREIGN KEY (`Purchase_num`) REFERENCES `PURCHASE` (`Purchase_no`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
